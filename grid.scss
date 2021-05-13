@@ -1,0 +1,68 @@
+@use 'reset';
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+@mixin clearfix {
+  &::before,
+  &::after {
+    content: '';
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+  }
+  &::after {
+    clear: both;
+  }
+  & {
+    zoom: 1;
+  }
+}
+
+// Grid
+
+$column-width: 60px;
+$column-gutter: 20px;
+$grid-width: 960px;
+
+@mixin grid-unit($span) {
+  float: left;
+  width: percentage(
+    (($column-width * $span) + ($column-gutter * ($span - 1))) / 940px
+  );
+  margin-right: percentage($column-gutter / 940px);
+}
+
+.grid-row {
+  @include clearfix();
+  width: 100%;
+  max-width: $grid-width;
+  margin: 0 auto;
+
+  font-size: 13px;
+  line-height: 1.5;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.grid-row .grid-row {
+  margin: 0 !important;
+}
+
+.grid-row :last-child {
+  margin-right: auto;
+}
+
+@for $num from 1 to 13 {
+  .col-#{$num} {
+    @include grid-unit($num);
+  }
+}
+
+.col-end {
+  margin-right: 0;
+}
